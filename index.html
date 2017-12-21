@@ -9,11 +9,37 @@
     <link href="style.css" rel="stylesheet" type="text/css">    
 </head>
 <body>
-	<div class="game-container">
-		<canvas id="game-canvas" height="400" width="400"></canvas>
+	<div class="game-container--parent">
+		<div class="game-container__grid">
+			<div class="game-grid__item" style="grid-area:r1c1" data-grid-row="1" data-grid-col="1"></div>
+			<div class="game-grid__item" style="grid-area:r1c2" data-grid-row="1" data-grid-col="2"></div>
+			<div class="game-grid__item" style="grid-area:r1c3" data-grid-row="1" data-grid-col="3"></div>
+			<div class="game-grid__item" style="grid-area:r1c4" data-grid-row="1" data-grid-col="4"></div>
+			<div class="game-grid__item" style="grid-area:r1c5" data-grid-row="1" data-grid-col="5"></div>
+			<div class="game-grid__item" style="grid-area:r2c1" data-grid-row="2" data-grid-col="1"></div>
+			<div class="game-grid__item" style="grid-area:r2c2" data-grid-row="2" data-grid-col="2"></div>
+			<div class="game-grid__item" style="grid-area:r2c3" data-grid-row="2" data-grid-col="3"></div>
+			<div class="game-grid__item" style="grid-area:r2c4" data-grid-row="2" data-grid-col="4"></div>
+			<div class="game-grid__item" style="grid-area:r2c5" data-grid-row="2" data-grid-col="5"></div>
+			<div class="game-grid__item" style="grid-area:r3c1" data-grid-row="3" data-grid-col="1"></div>
+			<div class="game-grid__item" style="grid-area:r3c2" data-grid-row="3" data-grid-col="2"></div>
+			<div class="game-grid__item" style="grid-area:r3c3" data-grid-row="3" data-grid-col="3"></div>
+			<div class="game-grid__item" style="grid-area:r3c4" data-grid-row="3" data-grid-col="4"></div>
+			<div class="game-grid__item" style="grid-area:r3c5" data-grid-row="3" data-grid-col="5"></div>
+			<div class="game-grid__item" style="grid-area:r4c1" data-grid-row="4" data-grid-col="1"></div>
+			<div class="game-grid__item" style="grid-area:r4c2" data-grid-row="4" data-grid-col="2"></div>
+			<div class="game-grid__item" style="grid-area:r4c3" data-grid-row="4" data-grid-col="3"></div>
+			<div class="game-grid__item" style="grid-area:r4c4" data-grid-row="4" data-grid-col="4"></div>
+			<div class="game-grid__item" style="grid-area:r4c5" data-grid-row="4" data-grid-col="5"></div>
+			<div class="game-grid__item" style="grid-area:r5c1" data-grid-row="5" data-grid-col="1"></div>
+			<div class="game-grid__item" style="grid-area:r5c2" data-grid-row="5" data-grid-col="2"></div>
+			<div class="game-grid__item" style="grid-area:r5c3" data-grid-row="5" data-grid-col="3"></div>
+			<div class="game-grid__item" style="grid-area:r5c4" data-grid-row="5" data-grid-col="4"></div>
+			<div class="game-grid__item" style="grid-area:r5c5" data-grid-row="5" data-grid-col="5"></div>
+		</div>
 	</div>
 
-	<script src="main.js" type="text/javascript"></script>
 	<script src="https://hammerjs.github.io/dist/hammer.js" type="text/javascript"></script>
+	<script src="main.js" type="text/javascript"></script>
 </body>
 </html>
