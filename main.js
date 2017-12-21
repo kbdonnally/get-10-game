@@ -40,7 +40,8 @@
 			value: parseInt(e.target.getAttribute('data-value')),
 			row:  parseInt(e.target.getAttribute('data-grid-row')),
 			column:  parseInt(e.target.getAttribute('data-grid-col')),
-			get rowAbove() {
+			gridArea: e.target.style.gridArea,
+	/*		get rowAbove() {
 				return this.row - 1;
 			},
 			get rowBelow() {
@@ -51,11 +52,13 @@
 			},
 			get columnItems() {
 				return document.querySelectorAll(`[data-grid-col="${this.column}"]`);
-			},
+			}, */
 		}
-		console.log(item.rowItems);
-		console.log(item.columnItems);
+		console.log(item.gridArea);
 	});
 
+	function checkToFill(item) {
+
+	}
 
 })();

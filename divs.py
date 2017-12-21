@@ -4,8 +4,8 @@
 # grid-areas: r{0}c{1} => {0}{1}, changed 12/21/17
 row = [1, 2, 3, 4, 5]
 col = [1, 2, 3, 4, 5]
-matrix = [["{0}-{1}".format(r, c), r, c] for r in row for c in col]
-areanames = ["{0}-{1}".format(r, c) for r in row for c in col]
+matrix = [["r{0}-c{1}".format(r, c), r, c] for r in row for c in col]
+areanames = ["r{0}-c{1}".format(r, c) for r in row for c in col]
 
 # create divs for game HTML
 def makeGameDivs(matrix):
@@ -38,4 +38,5 @@ def writeGridAreas(areanames):
 	return '''"{0}"\n"{1}"\n"{2}"\n"{3}"\n"{4}"'''.format(row1, row2, row3, row4, row5)
 
 
+# print(makeGameDivs(matrix))
 print(writeGridAreas(areanames))
