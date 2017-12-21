@@ -4,14 +4,14 @@
 # grid-areas: r{0}c{1} => {0}{1}, changed 12/21/17
 row = [1, 2, 3, 4, 5]
 col = [1, 2, 3, 4, 5]
-matrix = [["{0}{1}".format(r, c), r, c] for r in row for c in col] 
-areanames = ["{0}{1}".format(r, c) for r in row for c in col]
+matrix = [["{0}-{1}".format(r, c), r, c] for r in row for c in col]
+areanames = ["{0}-{1}".format(r, c) for r in row for c in col]
 
 # create divs for game HTML
 def makeGameDivs(matrix):
 	divList = ''
 	for m in matrix:
-		html = '''<div class="game-grid__item" style="grid-area:{0}" data-grid-row="{1}" data-grid-col="{2}">({1}, {2})</div>\n'''.format(m[0], m[1], m[2])
+		html = '''<div class="game-grid__item" style="grid-area:{0}" data-grid-row="{1}" data-grid-col="{2}"></div>\n'''.format(m[0], m[1], m[2])
 		divList += html
 	return divList
 
