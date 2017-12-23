@@ -161,17 +161,3 @@
 	
 
 })();
-
-
-// function lessons:
-/*
-var player = new GamePlayer("John Smith", 15, 3);
-The code above creates an instance of GamePlayer and stores the returned value in the variable player. In this case, you may want to define the function like this:
-
-function GamePlayer(name,totalScore,gamesPlayed) {
-  // `this` is the instance which is currently being created
-  this.name =  name;
-  this.totalScore = totalScore;
-  this.gamesPlayed = gamesPlayed;
-  // No need to return, but you can use `return this;` if you want
-} */
