@@ -7,7 +7,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: "Montserrat", sans-serif;
-	font-size: 1rem;
+	font-size: 1.5rem;
 	font-weight: 200;
 }
 
@@ -27,10 +27,10 @@ body {
 	grid-template-columns: repeat(5, 60px);
 	grid-template-rows: repeat(5, 60px);
 	grid-template-areas: "r1-c1 r1-c2 r1-c3 r1-c4 r1-c5 "
-"r2-c1 r2-c2 r2-c3 r2-c4 r2-c5 "
-"r3-c1 r3-c2 r3-c3 r3-c4 r3-c5 "
-"r4-c1 r4-c2 r4-c3 r4-c4 r4-c5 "
-"r5-c1 r5-c2 r5-c3 r5-c4 r5-c5 ";
+						 "r2-c1 r2-c2 r2-c3 r2-c4 r2-c5 "
+						 "r3-c1 r3-c2 r3-c3 r3-c4 r3-c5 "
+						 "r4-c1 r4-c2 r4-c3 r4-c4 r4-c5 "
+						 "r5-c1 r5-c2 r5-c3 r5-c4 r5-c5 ";
 	height: 300px;
 	width: 300px;
 }
@@ -64,4 +64,24 @@ body {
 
 .game-grid__item[data-value="4"] {
 	background-color: hsla(10, 100, 60, 1);
+}
+
+.game-grid__item[data-value="5"] {
+	background-color: hsla(140, 100, 30, 1);
+}
+
+.game-grid__item[data-value="6"] {
+	background-color: hsla(270, 100, 50, 1);
+}
+
+.game-grid__item[data-value="7"] {
+	background-color: hsla(310, 100, 50, 1);
+}
+
+.game-grid__item[data-value="8"] {
+	background-color: hsla(0, 100, 40, 1);
+}
+
+.game-grid__item[data-value="9"] {
+	background-color: hsla(60, 100, 70, 1);
 }

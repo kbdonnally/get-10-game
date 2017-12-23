@@ -6,7 +6,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 200; }
 
 .game-container--parent {
@@ -46,3 +46,18 @@ body {
 
 .game-grid__item[data-value="4"] {
   background-color: #ff5533; }
+
+.game-grid__item[data-value="5"] {
+  background-color: #009933; }
+
+.game-grid__item[data-value="6"] {
+  background-color: #8000ff; }
+
+.game-grid__item[data-value="7"] {
+  background-color: #ff00d5; }
+
+.game-grid__item[data-value="8"] {
+  background-color: #cc0000; }
+
+.game-grid__item[data-value="9"] {
+  background-color: #ffff66; }
