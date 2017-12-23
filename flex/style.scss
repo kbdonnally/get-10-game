@@ -68,12 +68,13 @@ body {
 
 /* Items: */
 .game-grid__item {
+	position: relative;
 	height: 60px;
 	width: 60px;
 	text-align: center;
 	line-height: 60px;
 	border: 1px solid red;
-	transition: border .2s, order 1s;
+	transition: border .2s, transform 1s;
 }
 
 .item-selected {
