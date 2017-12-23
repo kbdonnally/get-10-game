@@ -13,10 +13,10 @@
 		gameManager;
 
 	gameParent 	= document.querySelector(".game-container--parent");
-	gameGrid 	= document.querySelector(".game-container__grid");
+	gameGrid 	= document.querySelector(".game-container__flex");
 	items 		= document.getElementsByClassName("game-grid__item");
 
-	// take gameGrid           -> enable tap, pan, swipe inside
+	// take gameGrid           -> enable tap, pan in it
 	gameManager = new Hammer.Manager(gameGrid, {
 				recognizers: [
 					[Hammer.Tap,{ interval: 500 }],
@@ -36,7 +36,7 @@
 		value: 				   parseInt(elem.getAttribute('data-value')),
 		row:  				   parseInt(elem.getAttribute('data-grid-row')),
 		col:  				   parseInt(elem.getAttribute('data-grid-col')),
-		gridAreaFull: 		   elem.style.gridArea
+		position: 			   elem.getAttribute('data-position')
 	});
 
 	/* take attrsTemplate obj  -> props:   {value: n, row: i, col: j, gridArea: ri-cj}
@@ -47,10 +47,12 @@
 			this.value 		   = attrs.value;
 			this.row 		   = attrs.row;
 			this.col 		   = attrs.col;
-			this.gridArea 	   = attrs.gridAreaFull.slice(0,5);
+			this.position	   = attrs.position;
 		}
-		get itemsSameVal() {
-							   return document.querySelectorAll(`[data-value="${this.value}"]`);
+		get itemsSameVal() { 
+							   let elems = document.querySelectorAll(`[data-value="${this.value}"]`);
+							   return Array.prototype.filter.call(elems, elem => 
+							   	parseInt(elem.getAttribute('data-grid-row')) > 9);
 		}
 		get neighbors() {
 							   return [
@@ -62,7 +64,7 @@
 		}
 	}
 
-	// tap handler
+	// handle taps
 	gameManager.on("tap", function(e) {
 		console.log(e.type);
 		console.log(e.tapCount);
@@ -73,20 +75,36 @@
 		 */
 		if (document.querySelectorAll('.item-selected').length != 0) {
 			if (document.querySelector('.item-selected').innerHTML != e.target.innerHTML) {
-				for (let child of gameGrid.children) {
+				console.log(document.querySelector('.item-selected').innerHTML);
+				console.log(gameGrid.children);
+				for (let child of document.querySelectorAll('.item-selected')) {
+					console.log(child);
 					child.classList.remove('item-selected');
 				}
 			}
-			else {
+			else if (document.querySelector('.item-selected').innerHTML == e.target.innerHTML) {
 				e.target.innerHTML = parseInt(e.target.innerHTML) + 1;
 				e.target.setAttribute('data-value', e.target.innerHTML);
-				for (let child of gameGrid.children) {
-					if (child != e.target && child.classList.contains('item-selected')) {
-					//	child.innerHTML = "test";
-						child.remove();
-					}
+				for (let child of document.querySelectorAll('.item-selected')) {
 					child.classList.remove('item-selected');
+					if (child != e.target) {
+						console.log(child.parentNode.firstElementChild);
+						child.parentNode.insertBefore(child, child.parentNode.firstChild);
+						// reset value
+						let num = Math.floor((Math.random() * 3) + 1);
+						child.innerHTML = num;
+						child.setAttribute("data-value", num.toString());
+					}
+				}
+				for (let column of document.querySelectorAll('[class*="game-flex__col--"]')) {
+					for (let item of column.children) {
+						item.style.order = Array.prototype.indexOf.call(column.children, item);
+						item.setAttribute('data-grid-row', item.style.order);
+					}
 				}	
+			}
+			else {
+				console.log('This happened?');
 			}
 		}
 
@@ -95,7 +113,7 @@
 
 		// make event target a GameItem
 		var tappedItem = new GameItem(attrsTemplate(e.target));
-		console.log(tappedItem);
+		console.log(tappedItem.itemsSameVal);
 
 		// NodeList of all elems w/ same number as target
 		var sameVal = tappedItem.itemsSameVal;
@@ -107,7 +125,7 @@
 				var active = new GameItem(attrsTemplate(array[x]));
 				for (var i=0; i < sameVal.length; i++) {
 					for (var g=0; g < active.neighbors.length; g++) {
-						if (sameVal[i].style.gridArea.slice(0,5) == active.neighbors[g]) {
+						if (sameVal[i].getAttribute('data-position') == active.neighbors[g]) {
 							sameVal[i].classList.add('item-selected');
 							nextRound.push(sameVal[i]);
 						}
@@ -119,45 +137,20 @@
 			}
 			return nextRound;
 		}
+
+		for (let column of document.querySelectorAll('[class*="game-flex__col--"]')) {
+			for (let item of column.children) {
+				item.style.order = Array.prototype.indexOf.call(column.children, item);
+				item.setAttribute('data-grid-row', item.style.order);
+				let col = item.getAttribute('data-grid-col');
+				item.setAttribute('data-position', `r${item.style.order}-c${col}`);
+			}
+		}
 		
 		var roundTwo = highlightNeighbors([e.target]);
 		var roundThree = highlightNeighbors(roundTwo);
 		var roundFour = highlightNeighbors(roundThree);
 		var roundFive = highlightNeighbors(roundFour);
 		var roundSix = highlightNeighbors(roundFive);
-
-		/* Kristina's math school: make a loop for 25 of them ffs */
-
-		/*
-
-		// highlight next neighbors
-		if (roundTwo.length > 0) {
-			console.log(roundTwo);
-			for (var i=0; i < roundTwo.length; i++) {
-				console.log(roundTwo[i]);
-				var active = new GameItem(attrsTemplate(roundTwo[i]));
-				console.log(active);
-				for (var j=0; j < sameVal.length; j++) {
-					if (sameVal[i].style.gridArea.slice(0,5) == active.)	
-				}
-			}
-		} */
-
-		// highlight neighbors' neighbors
-	/*	for (var i=0; i < sameVal.length; i++) {
-			console.log(roundTwo[i]);
-			var currentItem = new GameItem(attrsTemplate(roundTwo[i]));
-			for (var g=0; g < currentItem.neighbors.length; g++) {
-				if (sameVal[i].style.gridArea.slice(0,5) == currentItem.neighbors[g]) {
-					sameVal[i].classList.add('item-selected');	
-				}
-			}
-		} */
-		
-
-
 	});
-
-	
-
 })();
