@@ -7,45 +7,97 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: "Montserrat", sans-serif;
-	font-size: 1.5rem;
-	font-weight: 200;
+	font-size: 1rem;
+	font-weight: 600;
+	color: rgba(0,0,0,.7);
 }
 
 .game-container--parent {
 	position: relative;
-//	display: flex;
-//	justify-content: center;
-//	align-items: center;
 	width: 100%;
-	height: 100vh;
+//	min-height: 100vh;
+	margin: 10vh 0 20vh 0;
+	&::before {
+		content: 'Jane Gets 10!';
+		display: block;
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%, 0);
+		font-size: 3rem;
+		text-align: center;
+		z-index: 1;
+	}
 }
 
-
-.game-container__grid {
+.game-container__flex {
 	position: relative;
-	display: grid;
-	grid-template-columns: repeat(5, 60px);
-	grid-template-rows: repeat(5, 60px);
-	grid-template-areas: "r1-c1 r1-c2 r1-c3 r1-c4 r1-c5 "
-						 "r2-c1 r2-c2 r2-c3 r2-c4 r2-c5 "
-						 "r3-c1 r3-c2 r3-c3 r3-c4 r3-c5 "
-						 "r4-c1 r4-c2 r4-c3 r4-c4 r4-c5 "
-						 "r5-c1 r5-c2 r5-c3 r5-c4 r5-c5 ";
-	height: 300px;
-	width: 300px;
+	transform: translate(0, -50%);
+	display: flex;
+	justify-content: center;
+	max-width: 350px;
+	margin: 0 auto;
+//	background-color:
+	&::before {
+		content: '';
+		z-index: 1;
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		width: 100%;
+		height: 66.66%;
+		background-color: rgba(255,255,255,1);
+	//	border-bottom: 3px solid yellow;
+	}
 }
 
+/* Columns: */
+
+[class*="game-flex__col--"] {
+//	margin: 0 2px;
+	display: flex;
+	flex-direction: column;
+	background-color: rgba(0,0,0,.1);
+}
+
+.game-flex__col--1 {
+
+}
+
+.game-flex__col--2 {
+
+}
+
+.game-flex__col--3 {
+
+}
+
+.game-flex__col--4 {
+
+}
+
+.game-flex__col--5 {
+
+}
+
+/* Items: */
 .game-grid__item {
+	position: relative;
 	height: 60px;
 	width: 60px;
 	text-align: center;
 	line-height: 60px;
-	border: 1px solid red;
-	transition: border .2s;
+	border: 0px solid rgba(255,255,255,.5);
+	transition-property: border, transform;
+	transition-duration: .2s, 1s;
+	font-size: 2rem;
 }
 
 .item-selected {
-	border: 3px solid red !important;
+	border-top: 3px solid rgba(255,255,255,.5) !important;
+	border-left: 3px solid rgba(255,255,255,.5) !important;
+	border-bottom: 3px solid rgba(0,0,0,.5) !important;
+	border-right: 3px solid rgba(0,0,0,.5) !important;
 }
 
 /* Color by number: */
