@@ -19,14 +19,22 @@
 	// take gameGrid           -> enable tap, pan in it
 	gameManager = new Hammer.Manager(gameGrid, {
 				recognizers: [
-					[Hammer.Tap,{ interval: 500 }],
+					[Hammer.Tap,{ event: 'doubletap', taps:2 }],
+					[Hammer.Tap,{ event: 'singletap', taps:1 }],
 					[Hammer.Pan,{ threshold:0 }]
 				]
 	});
+	// we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
+	gameManager.get('doubletap').recognizeWith('singletap');
+	// we only want to trigger a tap, when we don't have detected a doubletap
+	//gameManager.get('singletap').requireFailure('doubletap');
 
 	// manager for entire container
 	var parentManager = new Hammer.Manager(gameParent, {
-		recognizers: [ [Hammer.Tap, { interval: 500 }] ]
+		recognizers: [ 
+			[Hammer.Tap, { event: 'doubletap', taps:2 }],
+			[Hammer.Tap, { event: 'singletap', taps:1 }]
+		]
 	});
 
 	// on load take items[i]  -> assign int from 1-3
@@ -71,7 +79,7 @@
 
 
 	// deselect if tap outside game region
-	parentManager.on("tap", function(e) {
+	parentManager.on("doubletap singletap", function(e) {
 		if (e.target.classList.contains('game-grid__item') == false) {
 			for (let child of document.querySelectorAll('.item-selected')) {
 				child.classList.remove('item-selected');
@@ -79,8 +87,12 @@
 		}
 	});
 
+	gameManager.on("doubletap", function(e) {
+		console.log(e.type);
+	});
+
 	// handle game interactions
-	gameManager.on("tap", function(e) {
+	gameManager.on("singletap", function(e) {
 		console.log(e.type);
 		console.log(e.tapCount);
 
