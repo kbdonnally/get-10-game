@@ -1,0 +1,94 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7); }
+
+.game-container--parent {
+  position: relative;
+  width: 100%;
+  margin: 10vh 0 20vh 0; }
+  .game-container--parent::before {
+    content: 'Jane Gets 10!';
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 3rem;
+    text-align: center;
+    z-index: 1; }
+
+.game-container__flex {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  max-width: 350px;
+  margin: 0 auto; }
+  .game-container__flex::before {
+    content: '';
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 66.66%;
+    background-color: rgba(255, 255, 255, 0.5); }
+
+/* Columns: */
+[class*="game-flex__col--"] {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.1); }
+
+/* Items: */
+.game-grid__item {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  line-height: 60px;
+  border: 0px solid rgba(255, 255, 255, 0.5);
+  transition-property: border, transform;
+  transition-duration: .2s, 1s;
+  font-size: 2rem; }
+
+.item-selected {
+  border-top: 3px solid rgba(255, 255, 255, 0.5) !important;
+  border-left: 3px solid rgba(255, 255, 255, 0.5) !important;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.5) !important;
+  border-right: 3px solid rgba(0, 0, 0, 0.5) !important; }
+
+/* Color by number: */
+.game-grid__item[data-value="1"] {
+  background-color: #66ff66; }
+
+.game-grid__item[data-value="2"] {
+  background-color: #66ccff; }
+
+.game-grid__item[data-value="3"] {
+  background-color: #ffb366; }
+
+.game-grid__item[data-value="4"] {
+  background-color: #ff5533; }
+
+.game-grid__item[data-value="5"] {
+  background-color: #009933; }
+
+.game-grid__item[data-value="6"] {
+  background-color: #8000ff; }
+
+.game-grid__item[data-value="7"] {
+  background-color: #ff00d5; }
+
+.game-grid__item[data-value="8"] {
+  background-color: #cc0000; }
+
+.game-grid__item[data-value="9"] {
+  background-color: #ffff66; }
