@@ -10,13 +10,23 @@
 	var gameParent,
 		gameGrid,
 		items,
-		gameManager;
+		gameManager,
+		parentManager,
+		attrsTemplate;
 
 	gameParent 	= document.querySelector(".game-container--parent");
 	gameGrid 	= document.querySelector(".game-container__flex");
 	items 		= document.getElementsByClassName("game-grid__item");
 
-	// take gameGrid           -> enable tap, pan in it
+	// manager for entire container
+	parentManager = new Hammer.Manager(gameParent, {
+		recognizers: [ 
+			[Hammer.Tap, { event: 'doubletap', taps:2 }],
+			[Hammer.Tap, { event: 'singletap', taps:1 }]
+		]
+	});
+
+	// manager for game space
 	gameManager = new Hammer.Manager(gameGrid, {
 				recognizers: [
 					[Hammer.Tap,{ event: 'doubletap', taps:2 }],
@@ -24,37 +34,20 @@
 					[Hammer.Pan,{ threshold:0 }]
 				]
 	});
-	// we want to recognize this simulatenous, so a quadrupletap will be detected even while a tap has been recognized.
+
+	// simultaneously recognize both events
 	gameManager.get('doubletap').recognizeWith('singletap');
-	// we only want to trigger a tap, when we don't have detected a doubletap
-	//gameManager.get('singletap').requireFailure('doubletap');
 
-	// manager for entire container
-	var parentManager = new Hammer.Manager(gameParent, {
-		recognizers: [ 
-			[Hammer.Tap, { event: 'doubletap', taps:2 }],
-			[Hammer.Tap, { event: 'singletap', taps:1 }]
-		]
-	});
-
-	// on load take items[i]  -> assign int from 1-3
-	for (var i = 0; i < items.length; i++) {
-		var num = Math.floor((Math.random() * 3) + 1);
-		items[i].innerHTML = num;
-		items[i].setAttribute("data-value", num.toString());
-	}
-
-	// take DOM elem 	       -> props:   {value:n, row:i, col:j, gridAreaFull:<str>}
-	var attrsTemplate = (elem) => ({
+	// take DOM elem  		   -> props: {value:n, row:i, col:j, position: ri-cj}
+	attrsTemplate = (elem) => ({
 		value: 				   parseInt(elem.getAttribute('data-value')),
 		row:  				   parseInt(elem.getAttribute('data-grid-row')),
 		col:  				   parseInt(elem.getAttribute('data-grid-col')),
 		position: 			   elem.getAttribute('data-position')
 	});
 
-	/* take attrsTemplate obj  -> props:   {value: n, row: i, col: j, gridArea: ri-cj}
-	 *						   -> getters: {itemsSameVal: NodeList, neighbors: Array(4)}
-	 */
+	// take attrsTemplate obj  -> props:   {value: n, row: i, col: j, position: ri-cj}
+	//						   -> getters: {itemsSameVal: NodeList, neighbors: Array(4)}
 	class GameItem {
 		constructor(attrs) {
 			this.value 		   = attrs.value;
@@ -77,8 +70,16 @@
 		}
 	}
 
+	// SETUP:
+	// on load take game items -> assign int from 1-3
+	for (var i = 0; i < items.length; i++) {
+		var num = Math.floor((Math.random() * 3) + 1);
+		items[i].innerHTML = num;
+		items[i].setAttribute("data-value", num.toString());
+	}
 
-	// deselect if tap outside game region
+	// EVENT HANDLERS:
+	// 1. deselect if tap outside game region
 	parentManager.on("doubletap singletap", function(e) {
 		if (e.target.classList.contains('game-grid__item') == false) {
 			for (let child of document.querySelectorAll('.item-selected')) {
@@ -87,27 +88,21 @@
 		}
 	});
 
-	gameManager.on("doubletap", function(e) {
-		console.log(e.type);
-	});
-
-	// handle game interactions
-	gameManager.on("singletap", function(e) {
+	// 2. game interactions
+	gameManager.on("singletap doubletap", function(e) {
 		console.log(e.type);
 		console.log(e.tapCount);
-
-		
-		// CASE: there are already selected items present
+	
+		// CASE 1.0: there are already selected items present
 		if (document.querySelectorAll('.item-selected').length != 0) {
-
-			// simple delay function
+			// FUNCTIONS:
+			// 1. delay by t (ms)
 			function delay(t) {
 			   return new Promise(function(resolve) { 
 			       setTimeout(resolve, t)
 			   });
 			}
-
-			// x,y translate for each item
+			// 2. x,y translate for each item
 			function moveDown(child) {
 				var childNums = attrsTemplate(child);
 				var targetNums = attrsTemplate(e.target);
@@ -126,8 +121,9 @@
 					}
 				});
 			}
+			// END FUNCTIONS
 
-			// CASE: e.target is not in the group of selected items
+			// CASE 1.1: e.target is not in the group of selected items
 			if (document.querySelector('.item-selected').innerHTML != e.target.innerHTML ||
 				Array.prototype.includes.call(document.querySelectorAll('.item-selected'), e.target) == false) {
 				for (let child of document.querySelectorAll('.item-selected')) {
@@ -135,15 +131,17 @@
 				}
 			}
 
-			// CASE: e.target is in group of selected items
-			else if (Array.prototype.includes.call(document.querySelectorAll('.item-selected'), e.target)) {
-				// increment target
+			// CASE 1.2: e.target is in group of selected items
+			else if (Array.prototype.includes.call(document.querySelectorAll('.item-selected'), e.target) ||
+					 e.type == 'doubletap') {
+				// increment & deselect target
 				e.target.innerHTML = parseInt(e.target.innerHTML) + 1;
 				e.target.setAttribute('data-value', e.target.innerHTML);
 				e.target.classList.remove('item-selected');
 
-				// all items except target:
+				// all items *except* target:
 				let selected = document.querySelectorAll('.item-selected');
+
 				// PROMISES:
 				Promise.all(selected).then( (items) => {
 					for (let item of items) {
@@ -180,82 +178,32 @@
 						});
 					});
 				}).catch( (error) => console.log(error));
-				/* MOVE THIS: 
-				e.target.innerHTML = parseInt(e.target.innerHTML) + 1;
-				e.target.setAttribute('data-value', e.target.innerHTML); */
-			/*	for (let child of document.querySelectorAll('.item-selected')) {
-					child.classList.remove('item-selected');
-					if (child != e.target) {
-						/* insert x/y transitions here! */
-				/*		var childNums = attrsTemplate(child);
-						var targetNums = attrsTemplate(e.target);
-						var s = parseInt(e.target.offsetWidth);
-						var changeX = (targetNums.col - childNums.col) * (s) + "px";
-						var changeY = (targetNums.row - childNums.row) * (s) + "px";
-					//	child.style.transform = `translate(${changeX}, ${changeY})`; */
-
-						// PROMISES!!!
-
-						
-
-					/*	moveDown(child).then( function(div) {
-							console.log("test");
-							return delay(1000).then( function() {
-								div.style.order = -8;
-								div.style.backgroundColor = "purple";
-								console.log("another test");
-								return div;
-							});
-						}).then( function(div) {
-							return delay(1000).then( function() {
-								console.log("un-transform!");
-								div.style.transform = "translate(0,0)";
-								return div;
-							});
-						}).catch(function(error) {
-							console.log(error);
-						}); */
-					
-
-
-
-						/* now move elems up */
-					//	child.parentNode.insertBefore(child, child.parentNode.firstChild);
-					//	child.style.transform = "translate(0,0)";
-						// reset value
-					/*	let num = Math.floor((Math.random() * 3) + 1);
-						child.innerHTML = num;
-						child.setAttribute("data-value", num.toString()); */
-				
-			/*	for (let column of document.querySelectorAll('[class*="game-flex__col--"]')) {
-
-					for (let item of column.children) {
-						item.style.order = Array.prototype.indexOf.call(column.children, item);
-						item.setAttribute('data-grid-row', item.style.order);
-					}
-				} */
 			}
+
+			// CASE 1.3: computer wat r u doin
 			else {
 				console.log('This happened?');
 			}
 		}
 
+		// CASE 2.0: no items selected yet
 		else {
-			// highlight target
+			var tappedItem,
+				sameVal,
+				nextRound,
+				active;
+
 			e.target.classList.toggle('item-selected');
 
-			// make event target a GameItem
-			var tappedItem = new GameItem(attrsTemplate(e.target));
-			console.log(tappedItem.itemsSameVal);
+			tappedItem 	= new GameItem(attrsTemplate(e.target));
+			sameVal 	= tappedItem.itemsSameVal; // type: NodeList
 
-			// NodeList of all elems w/ same number as target
-			var sameVal = tappedItem.itemsSameVal;
-
-			// define flood fill
+			// FUNCTION:
+			// 1. define flood fill
 			function highlightNeighbors(array) {
-				var nextRound = [];
+				nextRound = [];
 				for (var x=0; x < array.length; x++) {
-					var active = new GameItem(attrsTemplate(array[x]));
+					active = new GameItem(attrsTemplate(array[x]));
 					for (var i=0; i < sameVal.length; i++) {
 						for (var g=0; g < active.neighbors.length; g++) {
 							if (sameVal[i].getAttribute('data-position') == active.neighbors[g]) {
@@ -282,13 +230,12 @@
 			}
 			
 			// execute flood fill
-			var roundTwo = highlightNeighbors([e.target]);
-			var roundThree = highlightNeighbors(roundTwo);
-			var roundFour = highlightNeighbors(roundThree);
-			var roundFive = highlightNeighbors(roundFour);
-			var roundSix = highlightNeighbors(roundFive);
-			var roundSeven = highlightNeighbors(roundSix);
+			var roundTwo 	= highlightNeighbors([e.target]);
+			var roundThree 	= highlightNeighbors(roundTwo);
+			var roundFour 	= highlightNeighbors(roundThree);
+			var roundFive 	= highlightNeighbors(roundFour);
+			var roundSix 	= highlightNeighbors(roundFive);
+			var roundSeven 	= highlightNeighbors(roundSix);
 		}
-		
 	});
 })();
