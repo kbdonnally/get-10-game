@@ -137,3 +137,23 @@ body {
 .game-grid__item[data-value="9"] {
 	background-color: hsla(60, 100, 70, 1);
 }
+
+.game-grid__item[data-value="10"] {
+	background-image: url("img/10-rainbow-border.png"), linear-gradient(hsla(310, 100, 50, 1), hsla(310, 100, 50, 1));
+	background-size: cover, auto;
+}
+
+// <a href='https://www.freepik.com/free-vector/silver-glitter-seamless-pattern_862869.htm'>Designed by Freepik</a>
+.game-grid__item[data-value="11"] {
+	background-image: url("img/11-silver-glitter-zoom.jpg");
+	background-size: contain;
+}
+
+.game-grid__item[data-value="12"] {
+	background-image: radial-gradient(rgba(212,0,255,1), rgba(125,0,255,1));
+}
+
+.game-grid__item[data-value="13"] {
+	background-image: url("img/classy-fabric.png"); // radial-gradient(rgba(212,0,255,1), rgba(125,0,255,1));
+	background-size: 120px;
+}

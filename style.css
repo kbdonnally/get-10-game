@@ -93,3 +93,18 @@ body {
 
 .game-grid__item[data-value="9"] {
   background-color: #ffff66; }
+
+.game-grid__item[data-value="10"] {
+  background-image: url("img/10-rainbow-border.png"), linear-gradient(#ff00d5, #ff00d5);
+  background-size: cover, auto; }
+
+.game-grid__item[data-value="11"] {
+  background-image: url("img/11-silver-glitter-zoom.jpg");
+  background-size: contain; }
+
+.game-grid__item[data-value="12"] {
+  background-image: radial-gradient(#d400ff, #7d00ff); }
+
+.game-grid__item[data-value="13"] {
+  background-image: url("img/classy-fabric.png");
+  background-size: 120px; }
